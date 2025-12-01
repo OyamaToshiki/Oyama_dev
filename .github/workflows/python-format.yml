@@ -1,9 +1,11 @@
 name: Auto Format & Lint
 
+# プルリクエストがオープン、同期、リオープンされたときに実行
 on:
   pull_request:
-    types:  [opened, synchronize, reopend]
+    types: [opened, synchronize, reopened]
 
+# 権限を設定: contentsとpull-requestsへの書き込みを許可
 permissions:
   contents: write
   pull-requests: write
@@ -13,47 +15,49 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # PR元のブランチを checkout
+      # PR元のブランチをチェックアウト
       - name: Checkout PR branch
         uses: actions/checkout@v4
         with:
+          # 自動コミットのためにトークンとfetch-depthを設定
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
 
-      # Pythonのセットアップ
+      # Pythonのセットアップ (バージョン3.11を使用)
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
       # 依存関係をインストール
+      # pyproject.tomlが自動的に使用されます
       - name: Install dependencies
         run: |
           pip install --upgrade pip
           pip install black isort flake8 mypy types-PyYAML
 
-      # blackを実行する
+      # blackを実行し、コードを自動フォーマットする
       - name: Run black
         run: black .
 
-      # isortを実行する
+      # isortを実行し、インポート順序をソートする
       - name: Run isort
         run: isort .
 
-      # 自動 commit & push (PR ブランチに直接）
+      # 自動コミット & プッシュ (フォーマットされたファイルをPRブランチに直接コミット)
       - name: Auto commit formatted files
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "chore: auto fomart (black & isort)"
+          commit_message: "chore: auto format (black & isort)"
           branch: ${{ github.head_ref }}
-          file_pettern: "."
+          files_pattern: "." # 変更された全てのファイル
           token: ${{ secrets.GITHUB_TOKEN }}
           stash: false
 
-      # flake8のチェック
+      # flake8のチェック (コードスタイルと構文のチェック)
       - name: Run flake8
         run: flake8 .
 
-      # mypyのチェック
+      # mypyのチェック (静的型チェック)
       - name: Run mypy
-        run: mypy
+        run: mypy .
