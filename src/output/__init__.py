@@ -35,10 +35,6 @@ def create_output_tariff_navi(
     if TYPE_CHECKING:
         # mypyによる型チェック時のみ実行されるブロック
         spark: SparkSession = SparkSession.builder.getOrCreate()
-        
-
-    
-    
 
     dm_base_dir = DBFSPath(
         "dbfs:/mnt/datalake003/sandbox/data-agile-group/"
@@ -215,7 +211,7 @@ def create_output_tariff_navi(
         gemini_results = first_row["action_summary"]
 
         # 出力ファイルパスを生成
-        file_path = f"{BASE_PATH}/{branch_code}/{customer_code}_{customer_name}/{target_month}_{store_code}_{customer_code}_{customer_name}.xlsx" # noqa
+        file_path = f"{BASE_PATH}/{branch_code}/{customer_code}_{customer_name}/{target_month}_{store_code}_{customer_code}_{customer_name}.xlsx"  # noqa
 
         # メモリ上でExcelファイルを扱うための準備
         output = io.BytesIO()
@@ -301,7 +297,7 @@ def create_output_tariff_navi(
 
                 ws["J1"].value = "ご意見・お問い合わせはこちら"
                 ws["J1"].hyperlink = (
-                    "https://docs.google.com/forms/d/e/1FAIpQLSeOuceu1itp8V4dIyvYsWstXE90UhdwsVelPY0e3A9Zc_DW-w/viewform" # noqa
+                    "https://docs.google.com/forms/d/e/1FAIpQLSeOuceu1itp8V4dIyvYsWstXE90UhdwsVelPY0e3A9Zc_DW-w/viewform"  # noqa
                 )
 
                 current_row = 10  # 概要情報の下、1行空けて開始
