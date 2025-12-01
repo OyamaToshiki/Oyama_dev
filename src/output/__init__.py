@@ -5,7 +5,6 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 
 import pandas as pd
-
 from openpyxl.styles import Alignment, Border, Font, Side
 from pyspark.sql import DataFrame, SparkSession
 from pyspark.sql import functions as F
@@ -492,7 +491,7 @@ def create_output_tariff_navi(
     @F.udf(T.StringType())
     def get_customer_folder_name(file_path: str) -> str:
         """file_pathから親ディレクトリ名（顧客フォルダ名）を取得する"""
-        
+
         # 欲しいのは `{customer_code}_{customer_name}` の部分
         customer_folder_raw = Path(file_path).parent.name
         # フォルダ名に "/" が含まれるとエラーになるため置換
