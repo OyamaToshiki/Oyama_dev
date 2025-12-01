@@ -1,0 +1,59 @@
+name: Auto Format & Lint
+
+on:
+  pull_request:
+    types:  [opened, synchronize, reopend]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  format-add-lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      # PR元のブランチを checkout
+      - name: Checkout PR branch
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      # Pythonのセットアップ
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      # 依存関係をインストール
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install black isort flake8 mypy types-PyYAML
+
+      # blackを実行する
+      - name: Run black
+        run: black .
+
+      # isortを実行する
+      - name: Run isort
+        run: isort .
+
+      # 自動 commit & push (PR ブランチに直接）
+      - name: Auto commit formatted files
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore: auto fomart (black & isort)"
+          branch: ${{ github.head_ref }}
+          file_pettern: "."
+          token: ${{ sercres.GITHUB_TOKEN }}
+          stash: false
+
+      # flake8のチェック
+      - name: Run flake8
+        run: flake8 .
+
+      # mypyのチェック
+      - name: Run mypy
+        run: mypy
