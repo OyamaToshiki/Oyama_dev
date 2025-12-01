@@ -1,15 +1,12 @@
 # 必要なライブラリのインポート
 import io
 import os
-
 from pathlib import Path
 from typing import TYPE_CHECKING
 
 import pandas as pd
 import yaml
-
 from openpyxl.styles import Alignment, Border, Font, Side
-
 from pyspark.sql import DataFrame, SparkSession
 from pyspark.sql import functions as F
 from pyspark.sql import types as T
@@ -43,59 +40,42 @@ def create_output_tariff_navi(
     with open(config_path) as _f:
         config = yaml.load(_f, Loader=yaml.FullLoader)
 
-    
-    
-
-
-    
-    
-
-
-    
-    
-    
-    
-    
-
-    
-    
-
     dm_base_dir = DBFSPath(
-        "dbfs:/mnt/datalake003/sandbox/data-agile-group/" + 
-        "プロジェクト/タリフナビ/tariff_datamart"
+        "dbfs:/mnt/datalake003/sandbox/data-agile-group/"
+        + "プロジェクト/タリフナビ/tariff_datamart"
     )
     datamart_dir = dm_base_dir / target_month / branch_code
 
     customer_master_base_dir = DBFSPath(
-        "dbfs:/mnt/datalake003/sandbox/data-agile-group/" + 
-        "プロジェクト/タリフナビ/customer_master"
+        "dbfs:/mnt/datalake003/sandbox/data-agile-group/"
+        + "プロジェクト/タリフナビ/customer_master"
     )
     customer_master_dir = customer_master_base_dir / target_month
 
     gemini_base_dir = DBFSPath(
-        "dbfs:/mnt/datalake003/sandbox/data-agile-group/" + 
-        "プロジェクト/タリフナビ/result"
+        "dbfs:/mnt/datalake003/sandbox/data-agile-group/"
+        + "プロジェクト/タリフナビ/result"
     )
     gemini_dir = (
         gemini_base_dir / branch_code / target_month / "target_gemini_results"
     )
 
     failed_base_dir = DBFSPath(
-        "dbfs:/mnt/datalake003/sandbox/data-agile-group/" + 
-        "プロジェクト/タリフナビ/failed_file"
+        "dbfs:/mnt/datalake003/sandbox/data-agile-group/"
+        + "プロジェクト/タリフナビ/failed_file"
     )
     failed_dir = failed_base_dir / branch_code
 
     freight_cost_master = DBFSPath(
-        "dbfs:/mnt/datalake003/sandbox/data-agile-group/" + 
-        "プロジェクト/タリフナビ/freight_cost_master"
+        "dbfs:/mnt/datalake003/sandbox/data-agile-group/"
+        + "プロジェクト/タリフナビ/freight_cost_master"
     )
     freight_cost_dir = freight_cost_master / target_month
 
     # Google Driveへのアップロードに成功した際にIDを保存するblobパス
     gdrive_id_base_dir = DBFSPath(
-        "dbfs:/mnt/datalake003/sandbox/data-agile-group/" + 
-        "プロジェクト/タリフナビ/gdrive_id"
+        "dbfs:/mnt/datalake003/sandbox/data-agile-group/"
+        + "プロジェクト/タリフナビ/gdrive_id"
     )
     gdrive_id_dir = gdrive_id_base_dir / target_month / branch_code
 
