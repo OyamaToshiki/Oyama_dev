@@ -31,10 +31,6 @@ def create_output_tariff_navi(
     """
     spark = SparkSession.builder.getOrCreate()
 
-    if TYPE_CHECKING:
-        # mypyによる型チェック時のみ実行されるブロック
-        spark: SparkSession = SparkSession.builder.getOrCreate()
-
     dm_base_dir = DBFSPath(
         "dbfs:/mnt/datalake003/sandbox/data-agile-group/"
         + "プロジェクト/タリフナビ/tariff_datamart"
