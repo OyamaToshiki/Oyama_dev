@@ -26,12 +26,12 @@
 
 # COMMAND ----------
 
-from pyspark.sql import functions as F
-from pyspark.sql import types as T
 import numpy as np
 import scipy as sp
-from pyspark.sql.column import Column
 from pyspark.sql import Window
+from pyspark.sql import functions as F
+from pyspark.sql import types as T
+from pyspark.sql.column import Column
 
 # COMMAND ----------
 
@@ -72,7 +72,12 @@ url = (
 
 # データを抽出する。
 genka_seichika_sdf_synapse = (
-    spark.read.format("jdbc").option("url", url).option("numPartitions", 4).option("fetchsize", 1000000000).option("query", query).load()
+    spark.read.format("jdbc")
+    .option("url", url)
+    .option("numPartitions", 4)
+    .option("fetchsize", 1000000000)
+    .option("query", query)
+    .load()
 )
 
 # COMMAND ----------
@@ -85,9 +90,7 @@ genka_seichika_sdf_synapse = (
 # 各個人のパスを設定してください。
 path = "/mnt/blob_sandbox/ydx/t_oyama/勉強会/tmp/"
 
-genka_seichika_sdf_synapse.write.mode("overwrite").parquet(
-    path
-)
+genka_seichika_sdf_synapse.write.mode("overwrite").parquet(path)
 
 # COMMAND ----------
 
@@ -98,9 +101,7 @@ genka_seichika_sdf_synapse.write.mode("overwrite").parquet(
 
 check = True
 if check is True:
-    path = (
-        f"/mnt/blob_sandbox/ydx/project/原価精緻化PJ/datamart/seichika_datamart/{target_ym}"
-    )
+    path = f"/mnt/blob_sandbox/ydx/project/原価精緻化PJ/datamart/seichika_datamart/{target_ym}"
 
 # COMMAND ----------
 
@@ -135,13 +136,19 @@ display(genka_seichika_sdf.limit(10))
 # COMMAND ----------
 
 display(
-    genka_seichika_sdf.select("伝票番号",
-        "統一コード","漢字商号",
-        "集計日","税抜合計運賃",
-        "定価","発店店所コード",
-        "発店事業所名","着地域名",
+    genka_seichika_sdf.select(
+        "伝票番号",
+        "統一コード",
+        "漢字商号",
+        "集計日",
+        "税抜合計運賃",
+        "定価",
+        "発店店所コード",
+        "発店事業所名",
+        "着地域名",
         "サイズ品目名",
-        "サイズ","精緻化原価合計",
+        "サイズ",
+        "精緻化原価合計",
         "ハキダシ合計",
     ).limit(10)
 )
@@ -162,10 +169,12 @@ display(
         "集計日",
         "税抜合計運賃",
         "定価",
-        "発店店所コード","発店事業所名",
+        "発店店所コード",
+        "発店事業所名",
         "着地域名",
         "サイズ品目名",
-        "サイズ","精緻化原価合計",
+        "サイズ",
+        "精緻化原価合計",
         "ハキダシ合計",
     ).limit(10)
 )
@@ -199,7 +208,9 @@ customer_code = "0013601566"
 seichika_total_amount = 600
 
 display(
-    genka_seichika_sdf.filter((F.col("顧客コード") == customer_code) & (F.col("精緻化原価合計") >= seichika_total_amount)
+    genka_seichika_sdf.filter(
+        (F.col("顧客コード") == customer_code)
+        & (F.col("精緻化原価合計") >= seichika_total_amount)
     )
 )
 
@@ -220,7 +231,11 @@ shukan_code_2 = "133000"
 
 display(
     genka_seichika_sdf.filter(
-        (F.col("顧客コード") == customer_code)& ((F.col("着主管支店コード") == shukan_code_1) | (F.col("着主管支店コード") == shukan_code_2))
+        (F.col("顧客コード") == customer_code)
+        & (
+            (F.col("着主管支店コード") == shukan_code_1)
+            | (F.col("着主管支店コード") == shukan_code_2)
+        )
     )
 )
 
@@ -240,7 +255,8 @@ shukan_code_1 = "022000"
 
 display(
     genka_seichika_sdf.filter(
-        (F.col("顧客コード") == customer_code) & (F.col("着主管支店コード") != shukan_code_1)
+        (F.col("顧客コード") == customer_code)
+        & (F.col("着主管支店コード") != shukan_code_1)
     )
 )
 
@@ -282,7 +298,10 @@ seichika_total_amount = 600
 
 display(
     genka_seichika_sdf.filter(
-        ~((F.col("顧客コード") != customer_code) | (F.col("精緻化原価合計") < seichika_total_amount))
+        ~(
+            (F.col("顧客コード") != customer_code)
+            | (F.col("精緻化原価合計") < seichika_total_amount)
+        )
     )
 )
 
@@ -353,7 +372,9 @@ customer_code = "0013601566"
 window_spec = Window.orderBy(F.col("精緻化原価合計").desc())
 
 display(
-    genka_seichika_sdf.filter(F.col("顧客コード") == customer_code).withColumn("rank", F.rank().over(window_spec)).select("伝票番号", "精緻化原価合計", "rank")
+    genka_seichika_sdf.filter(F.col("顧客コード") == customer_code)
+    .withColumn("rank", F.rank().over(window_spec))
+    .select("伝票番号", "精緻化原価合計", "rank")
 )
 
 # COMMAND ----------
@@ -395,7 +416,9 @@ genka_seichika_sdf.count()
 display(
     genka_seichika_sdf.groupBy("顧客コード")
     .sum("精緻化原価合計", "ハキダシ合計")
-    .withColumnRenamed("sum(精緻化原価合計)", "精緻化原価合計_顧客コード別総計")
+    .withColumnRenamed(
+        "sum(精緻化原価合計)", "精緻化原価合計_顧客コード別総計"
+    )
     .withColumnRenamed("sum(ハキダシ合計)", "ハキダシ合計_顧客コード別総計")
     .limit(10)
 )
@@ -408,20 +431,28 @@ display(
 
 # COMMAND ----------
 
-display(genka_seichika_sdf.groupBy("顧客コード").min("精緻化原価合計").limit(10))
+display(
+    genka_seichika_sdf.groupBy("顧客コード").min("精緻化原価合計").limit(10)
+)
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ## 演習問題19 
+# MAGIC ## 演習問題19
 # MAGIC 顧客コードごとに最も古い集計日と最も新しい集計日を抽出し、上位10件を表示させよ。
 
 # COMMAND ----------
 
-genka_seichika_sdf_min = genka_seichika_sdf.groupBy("顧客コード").agg(F.min("集計日"))
-genka_seichika_sdf_max = genka_seichika_sdf.groupBy("顧客コード").agg(F.max("集計日"))
+genka_seichika_sdf_min = genka_seichika_sdf.groupBy("顧客コード").agg(
+    F.min("集計日")
+)
+genka_seichika_sdf_max = genka_seichika_sdf.groupBy("顧客コード").agg(
+    F.max("集計日")
+)
 
-genka_seichika_sdf_merge = genka_seichika_sdf_min.join(genka_seichika_sdf_max, how="left", on="顧客コード")
+genka_seichika_sdf_merge = genka_seichika_sdf_min.join(
+    genka_seichika_sdf_max, how="left", on="顧客コード"
+)
 display(genka_seichika_sdf_merge.limit(10))
 
 # COMMAND ----------
@@ -509,8 +540,14 @@ display(
 
 display(
     genka_seichika_sdf.groupBy("顧客コード")
-    .agg(F.mean("精緻化原価合計").alias("精緻化原価合計_平均値"), F.mean("ハキダシ合計").alias("ハキダシ合計_平均値"))
-    .orderBy(F.col("精緻化原価合計_平均値").desc(), F.col("ハキダシ合計_平均値").desc())
+    .agg(
+        F.mean("精緻化原価合計").alias("精緻化原価合計_平均値"),
+        F.mean("ハキダシ合計").alias("ハキダシ合計_平均値"),
+    )
+    .orderBy(
+        F.col("精緻化原価合計_平均値").desc(),
+        F.col("ハキダシ合計_平均値").desc(),
+    )
     .limit(10)
 )
 
@@ -523,7 +560,9 @@ display(
 # COMMAND ----------
 
 display(
-    genka_seichika_sdf.withColumn("差額", F.col("精緻化原価合計") - F.col("ハキダシ合計"))
+    genka_seichika_sdf.withColumn(
+        "差額", F.col("精緻化原価合計") - F.col("ハキダシ合計")
+    )
     .orderBy(F.col("差額").desc())
     .limit(10)
 )
@@ -610,7 +649,9 @@ satofuru_sdf = (
     .agg(F.first("伝票番号件数"))
     .fillna(0)
     # 以下はフォーマットを成型するための処理である。
-    .withColumn("sort_key_A", F.array_position(F.lit(region_name), F.col("発地域名")))
+    .withColumn(
+        "sort_key_A", F.array_position(F.lit(region_name), F.col("発地域名"))
+    )
     .orderBy("sort_key_A")
     .drop("sort_key_A")
     .select(["発地域名"] + region_name)
@@ -622,11 +663,13 @@ display(satofuru_sdf)
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ## 演習問題30 
+# MAGIC ## 演習問題30
 # MAGIC 演習問題29（もしくは28）で抽出したデータを自分のblobにcsv形式で保存せよ。（ヒント：デフォルトでは「part-00000-....csv」のような形式で出力されるため、pandas形式に変換し保存する。また、文字化けが発生するため、encodingを実施する。またpathは"/dbfs/mnt/datalake003/ydx/~"とする。
 
 # COMMAND ----------
 
 blob_path = "/dbfs/mnt/datalake003/ydx/t_oyama/勉強会/output/output_勉強会.csv"
-satofuru_pd = satofuru_sdf.toPandas().to_csv(blob_path, index=False, header=True, encoding='shift_jis')
-satofuru_pd.to_csv(blob_path, index=False, header=True, encoding='shift_jis')
+satofuru_pd = satofuru_sdf.toPandas().to_csv(
+    blob_path, index=False, header=True, encoding="shift_jis"
+)
+satofuru_pd.to_csv(blob_path, index=False, header=True, encoding="shift_jis")

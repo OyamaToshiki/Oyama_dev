@@ -26,12 +26,12 @@
 
 # COMMAND ----------
 
+import numpy as np
+import scipy as sp
+from pyspark.sql import Window
 from pyspark.sql import functions as F
 from pyspark.sql import types as T
 from pyspark.sql.column import Column
-from pyspark.sql import Window
-import numpy as np
-import scipy as sp
 
 # COMMAND ----------
 
@@ -90,9 +90,7 @@ genka_seichika_sdf_synapse = (
 # 各個人のパスを設定してください。
 path = "/mnt/blob_sandbox/ydx/t_oyama/勉強会/tmp/"
 
-genka_seichika_sdf_synapse.write.mode("overwrite").parquet(
-    path
-)
+genka_seichika_sdf_synapse.write.mode("overwrite").parquet(path)
 
 # COMMAND ----------
 
@@ -103,9 +101,7 @@ genka_seichika_sdf_synapse.write.mode("overwrite").parquet(
 
 check = True
 if check is True:
-    path = (
-        f"/mnt/blob_sandbox/ydx/project/原価精緻化PJ/datamart/seichika_datamart/{target_ym}"
-    )
+    path = f"/mnt/blob_sandbox/ydx/project/原価精緻化PJ/datamart/seichika_datamart/{target_ym}"
 
 # COMMAND ----------
 
@@ -130,7 +126,6 @@ genka_seichika_sdf = spark.read.parquet(path)
 # COMMAND ----------
 
 
-
 # COMMAND ----------
 
 # MAGIC %md
@@ -138,7 +133,6 @@ genka_seichika_sdf = spark.read.parquet(path)
 # MAGIC 抽出したデータセットから、「伝票番号・統一コード・漢字商号・集計日・税抜合計運賃・定価・発店店所コード・発店事業所名・着地域名・サイズ品目名・サイズ・精緻化原価合計・ハキダシ合計」の順に選択し、10件表示させよ。
 
 # COMMAND ----------
-
 
 
 # COMMAND ----------
@@ -150,7 +144,6 @@ genka_seichika_sdf = spark.read.parquet(path)
 # COMMAND ----------
 
 
-
 # COMMAND ----------
 
 # MAGIC %md
@@ -160,7 +153,6 @@ genka_seichika_sdf = spark.read.parquet(path)
 # MAGIC 顧客コードが"0013601566"
 
 # COMMAND ----------
-
 
 
 # COMMAND ----------
@@ -175,7 +167,6 @@ genka_seichika_sdf = spark.read.parquet(path)
 # COMMAND ----------
 
 
-
 # COMMAND ----------
 
 # MAGIC %md
@@ -186,7 +177,6 @@ genka_seichika_sdf = spark.read.parquet(path)
 # MAGIC - 着主管支店コードが"033000"、または"133000"
 
 # COMMAND ----------
-
 
 
 # COMMAND ----------
@@ -201,7 +191,6 @@ genka_seichika_sdf = spark.read.parquet(path)
 # COMMAND ----------
 
 
-
 # COMMAND ----------
 
 # MAGIC %md
@@ -214,7 +203,6 @@ genka_seichika_sdf = spark.read.parquet(path)
 # COMMAND ----------
 
 
-
 # COMMAND ----------
 
 # MAGIC %md
@@ -222,7 +210,6 @@ genka_seichika_sdf = spark.read.parquet(path)
 # MAGIC 演習問題5において、出力結果を変えずにANDをORに書き換えよ。（少し難易度高め）
 
 # COMMAND ----------
-
 
 
 # COMMAND ----------
@@ -234,7 +221,6 @@ genka_seichika_sdf = spark.read.parquet(path)
 # COMMAND ----------
 
 
-
 # COMMAND ----------
 
 # MAGIC %md
@@ -242,7 +228,6 @@ genka_seichika_sdf = spark.read.parquet(path)
 # MAGIC 発主管支店コードが"600"で終わりのデータを抽出し、上位10件表示させよ。
 
 # COMMAND ----------
-
 
 
 # COMMAND ----------
@@ -254,7 +239,6 @@ genka_seichika_sdf = spark.read.parquet(path)
 # COMMAND ----------
 
 
-
 # COMMAND ----------
 
 # MAGIC %md
@@ -262,7 +246,6 @@ genka_seichika_sdf = spark.read.parquet(path)
 # MAGIC 集荷日が早い順に並べ替えを行い、上位10件表示させよ。
 
 # COMMAND ----------
-
 
 
 # COMMAND ----------
@@ -274,7 +257,6 @@ genka_seichika_sdf = spark.read.parquet(path)
 # COMMAND ----------
 
 
-
 # COMMAND ----------
 
 # MAGIC %md
@@ -282,7 +264,6 @@ genka_seichika_sdf = spark.read.parquet(path)
 # MAGIC 顧客コードが"0013601566"のデータにおいて、精緻化原価合計が大きい順にランクを付与し、伝票番号・精緻化原価合計・ランクを表示させよ。なお、精緻化原価合計が等しい場合は同一順位を付与するものとする。
 
 # COMMAND ----------
-
 
 
 # COMMAND ----------
@@ -294,7 +275,6 @@ genka_seichika_sdf = spark.read.parquet(path)
 # COMMAND ----------
 
 
-
 # COMMAND ----------
 
 # MAGIC %md
@@ -302,7 +282,6 @@ genka_seichika_sdf = spark.read.parquet(path)
 # MAGIC 2024年4月分の件数をカウントせよ。（データセットの件数をカウントせよ。）
 
 # COMMAND ----------
-
 
 
 # COMMAND ----------
@@ -314,7 +293,6 @@ genka_seichika_sdf = spark.read.parquet(path)
 # COMMAND ----------
 
 
-
 # COMMAND ----------
 
 # MAGIC %md
@@ -324,15 +302,13 @@ genka_seichika_sdf = spark.read.parquet(path)
 # COMMAND ----------
 
 
-
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ## 演習問題19 
+# MAGIC ## 演習問題19
 # MAGIC 顧客コードごとに最も古い集計日と最も新しい集計日を抽出し、上位10件を表示させよ。
 
 # COMMAND ----------
-
 
 
 # COMMAND ----------
@@ -344,7 +320,6 @@ genka_seichika_sdf = spark.read.parquet(path)
 # COMMAND ----------
 
 
-
 # COMMAND ----------
 
 # MAGIC %md
@@ -352,7 +327,6 @@ genka_seichika_sdf = spark.read.parquet(path)
 # MAGIC 顧客コードごとの精緻化原価合計の中央値を計算し、降順で上位10件表示させよ。
 
 # COMMAND ----------
-
 
 
 # COMMAND ----------
@@ -364,7 +338,6 @@ genka_seichika_sdf = spark.read.parquet(path)
 # COMMAND ----------
 
 
-
 # COMMAND ----------
 
 # MAGIC %md
@@ -372,7 +345,6 @@ genka_seichika_sdf = spark.read.parquet(path)
 # MAGIC 顧客コードごとの精緻化原価合計の標本分散を計算し、降順で上位10件表示させよ。
 
 # COMMAND ----------
-
 
 
 # COMMAND ----------
@@ -384,7 +356,6 @@ genka_seichika_sdf = spark.read.parquet(path)
 # COMMAND ----------
 
 
-
 # COMMAND ----------
 
 # MAGIC %md
@@ -392,7 +363,6 @@ genka_seichika_sdf = spark.read.parquet(path)
 # MAGIC 顧客コードの精緻化原価合計の平均値とハキダシ合計の平均値を計算し、精緻化原価合計→ハキダシ合計の順に降順で10件表示させよ。
 
 # COMMAND ----------
-
 
 
 # COMMAND ----------
@@ -404,7 +374,6 @@ genka_seichika_sdf = spark.read.parquet(path)
 # COMMAND ----------
 
 
-
 # COMMAND ----------
 
 # MAGIC %md
@@ -412,7 +381,6 @@ genka_seichika_sdf = spark.read.parquet(path)
 # MAGIC 精緻化原価合計がnullになっているデータに対して、「nullフラグ（nullの時：1, それ以外：0）」を付与し、顧客コード順に上位10件表示させよ。
 
 # COMMAND ----------
-
 
 
 # COMMAND ----------
@@ -427,7 +395,6 @@ genka_seichika_sdf = spark.read.parquet(path)
 # COMMAND ----------
 
 
-
 # COMMAND ----------
 
 # MAGIC %md
@@ -438,12 +405,10 @@ genka_seichika_sdf = spark.read.parquet(path)
 # COMMAND ----------
 
 
-
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ## 演習問題30 
+# MAGIC ## 演習問題30
 # MAGIC 演習問題29（もしくは28）で抽出したデータを自分のblobにcsv形式で保存せよ。（ヒント：デフォルトでは「part-00000-....csv」のような形式で出力されるため、pandas形式に変換し保存する。また、文字化けが発生するため、encodingを実施する。また、pathは"/dbfs/mnt/datalake003/ydx/~"とする。
 
 # COMMAND ----------
-
