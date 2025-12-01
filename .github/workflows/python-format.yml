@@ -47,7 +47,7 @@ jobs:
           commit_message: "chore: auto fomart (black & isort)"
           branch: ${{ github.head_ref }}
           file_pettern: "."
-          token: ${{ sercres.GITHUB_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           stash: false
 
       # flake8のチェック
