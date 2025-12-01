@@ -1,6 +1,7 @@
 [tool.black]
 line-length = 79
 target-version = ["py311"]
+# 除外ディレクトリを設定
 exclude = '''
 /(
     \.venv
@@ -17,11 +18,13 @@ include_trailing_comma = true
 
 [tool.flake8]
 max-line-length = 79
+# blackとの衝突を避けるための無視設定
 extend-ignore = ["E203", "W503"]
 exclude = [
-     ".venv",
-     "build",
-     "dist",
+    ".venv",
+    "build",
+    "dist",
+    "migrations",
 ]
 
 [tool.mypy]
