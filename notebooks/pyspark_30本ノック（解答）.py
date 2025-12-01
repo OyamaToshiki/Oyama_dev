@@ -5,13 +5,13 @@
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ## このノートブックは、[データサイエンス100本ノック](https://github.com/The-Japan-DataScientist-Society/100knocks-preprocess)を参考に、pysparkで構造化データを扱う際に必要なスキル習得を目的とした演習問題集です。
+# MAGIC ## このノートブックは、[データサイエンス100本ノック](https://github.com/The-Japan-DataScientist-Society/100knocks-preprocess)を参考に、pysparkで構造化データを扱う際に必要なスキル習得を目的とした演習問題集です。# noqa
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ## 題材は、[原価精緻化データマート（通称：火星マート）](https://github.com/ML-ANALYSIS/percel-cost-refinement)になります。
-# MAGIC そのため、本データセットではおそらく使用しないであろう処理や複雑な処理は今回対象外にしています。そのあたりについても知りたい方は[こちら](https://github.com/t-hashiguchi1995/100knock_pyspark/blob/main/preprocess_knock_Python_Spark.ipynb)を参考にしてください。
+# MAGIC ## 題材は、[原価精緻化データマート（通称：火星マート）](https://github.com/ML-ANALYSIS/percel-cost-refinement)になります。# noqa
+# MAGIC そのため、本データセットではおそらく使用しないであろう処理や複雑な処理は今回対象外にしています。そのあたりについても知りたい方は[こちら](https://github.com/t-hashiguchi1995/100knock_pyspark/blob/main/preprocess_knock_Python_Spark.ipynb)を参考にしてください。# noqa
 # MAGIC また、関数の説明は省いてますので、適宜google検索等を使用してください。
 
 # COMMAND ----------
