@@ -32,7 +32,7 @@ python_version = "3.11"
 strict = false
 
 [[tool.mypy.overrides]]
-module = ['pyspark']
+module = ['pyspark.*']
 ignore_missing_imports = true
 
 [tool.setuptools.packages.find]
