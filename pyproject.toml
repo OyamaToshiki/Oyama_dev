@@ -34,4 +34,4 @@ strict = false
 mypy_path = "."
 
 [mypy-polars.*]
-ignore_missing_imports = true
+ignore_missing_imports = True
