@@ -35,7 +35,3 @@ strict = false
 [[tool.mypy.overrides]]
 module = "polars.*"
 ignore_missing_imports = true
-
-[tool.setuptools.packages.find]
-where = ["src"]
-
