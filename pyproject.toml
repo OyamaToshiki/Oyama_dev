@@ -31,3 +31,7 @@ exclude = [
 python_version = "3.11"
 ignore_missing_imports = true
 strict = false
+
+[[tool.mypy.polars]]
+module = "polars.*"
+ignore_missing_imports = true
