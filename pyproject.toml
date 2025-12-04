@@ -35,6 +35,3 @@ strict = false
 [[tool.mypy.polars]]
 module = "polars.*"
 ignore_missing_imports = true
-
-
-
