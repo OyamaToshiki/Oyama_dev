@@ -1,0 +1,4 @@
+[mypy]
+
+[mypy-yaml.*]
+ignore_missing_imports = True
